@@ -1,5 +1,5 @@
 -- ============================================
--- NYCOLAS BLOX - Interface Teddy Hub + Botões
+-- NYCOLAS BLOX - Painel MM2
 -- Key: NYCOLAS
 -- ============================================
 
@@ -15,7 +15,6 @@ _G.infinjump = false
 _G.aimbotEnabled = false
 _G.flyEnabled = false
 _G.noclip = false
-_G.godMode = false
 _G.autoShootMurderer = false
 _G.autoShootSheriff = false
 
@@ -23,9 +22,6 @@ local selectedPlayer = nil
 local aimbotTarget = "Ninguém (Todos)"
 local screenButtons = {}
 
--- ============================================
--- DETECÇÃO DE PAPEL
--- ============================================
 local function getRole(player)
     if player == LocalPlayer then return "Local" end
     local char = player.Character
@@ -50,9 +46,6 @@ local function getRole(player)
     return "Innocent"
 end
 
--- ============================================
--- ESP
--- ============================================
 local RoleESP = { Enabled = false, Highlights = {}, Roles = {} }
 local RoleColors = {
     ["Murderer"] = Color3.fromRGB(255, 0, 0),
@@ -138,9 +131,6 @@ task.spawn(function()
     end
 end)
 
--- ============================================
--- AIMBOT
--- ============================================
 local function getAimbotTarget()
     local closest = nil
     local shortest = 300
@@ -182,9 +172,6 @@ RunService.RenderStepped:Connect(function()
     end
 end)
 
--- ============================================
--- AUTO-SHOOT
--- ============================================
 local function shoot()
     local vu = game:GetService("VirtualUser")
     vu:CaptureController()
@@ -227,9 +214,6 @@ task.spawn(function()
     end
 end)
 
--- ============================================
--- FLY / NOCLIP
--- ============================================
 local flyBV, flyBG = nil, nil
 
 local function startFly()
@@ -274,17 +258,12 @@ RunService.Stepped:Connect(function()
     end
 end)
 
--- ============================================
--- BOTÕES NA TELA (AIMBOT + AUTO-SHOOT)
--- ============================================
 local function createScreenButtons()
     if screenButtons.frame then return end
-
     local gui = Instance.new("ScreenGui")
     gui.Name = "NycolasBloxButtons"
     gui.ResetOnSpawn = false
     gui.Parent = LocalPlayer:WaitForChild("PlayerGui")
-
     local frame = Instance.new("Frame")
     frame.Size = UDim2.new(0, 160, 0, 240)
     frame.Position = UDim2.new(0, 20, 0.5, -120)
@@ -292,12 +271,9 @@ local function createScreenButtons()
     frame.BackgroundTransparency = 0.2
     frame.BorderSizePixel = 0
     frame.Parent = gui
-
     local corner = Instance.new("UICorner")
     corner.CornerRadius = UDim.new(0, 10)
     corner.Parent = frame
-
-    -- Título
     local title = Instance.new("TextLabel")
     title.Size = UDim2.new(1, 0, 0, 30)
     title.BackgroundColor3 = Color3.fromRGB(75, 0, 130)
@@ -307,12 +283,9 @@ local function createScreenButtons()
     title.TextSize = 13
     title.BorderSizePixel = 0
     title.Parent = frame
-
     local tCorner = Instance.new("UICorner")
     tCorner.CornerRadius = UDim.new(0, 10)
     tCorner.Parent = title
-
-    -- Botão Aimbot
     local btnAim = Instance.new("TextButton")
     btnAim.Size = UDim2.new(0.9, 0, 0, 40)
     btnAim.Position = UDim2.new(0.05, 0, 0, 40)
@@ -323,11 +296,9 @@ local function createScreenButtons()
     btnAim.TextSize = 13
     btnAim.BorderSizePixel = 0
     btnAim.Parent = frame
-
     local c1 = Instance.new("UICorner")
     c1.CornerRadius = UDim.new(0, 8)
     c1.Parent = btnAim
-
     btnAim.MouseButton1Click:Connect(function()
         _G.aimbotEnabled = not _G.aimbotEnabled
         if _G.aimbotEnabled then
@@ -338,8 +309,6 @@ local function createScreenButtons()
             btnAim.Text = "🎯 Aimbot"
         end
     end)
-
-    -- Botão Assassino
     local btnM = Instance.new("TextButton")
     btnM.Size = UDim2.new(0.9, 0, 0, 40)
     btnM.Position = UDim2.new(0.05, 0, 0, 90)
@@ -350,11 +319,9 @@ local function createScreenButtons()
     btnM.TextSize = 13
     btnM.BorderSizePixel = 0
     btnM.Parent = frame
-
     local c2 = Instance.new("UICorner")
     c2.CornerRadius = UDim.new(0, 8)
     c2.Parent = btnM
-
     btnM.MouseButton1Click:Connect(function()
         _G.autoShootMurderer = not _G.autoShootMurderer
         if _G.autoShootMurderer then
@@ -365,8 +332,6 @@ local function createScreenButtons()
             btnM.Text = "🔴 Assassino"
         end
     end)
-
-    -- Botão Xerife
     local btnS = Instance.new("TextButton")
     btnS.Size = UDim2.new(0.9, 0, 0, 40)
     btnS.Position = UDim2.new(0.05, 0, 0, 140)
@@ -377,11 +342,9 @@ local function createScreenButtons()
     btnS.TextSize = 13
     btnS.BorderSizePixel = 0
     btnS.Parent = frame
-
     local c3 = Instance.new("UICorner")
     c3.CornerRadius = UDim.new(0, 8)
     c3.Parent = btnS
-
     btnS.MouseButton1Click:Connect(function()
         _G.autoShootSheriff = not _G.autoShootSheriff
         if _G.autoShootSheriff then
@@ -392,8 +355,6 @@ local function createScreenButtons()
             btnS.Text = "🔵 Xerife"
         end
     end)
-
-    -- Botão ESP
     local btnESP = Instance.new("TextButton")
     btnESP.Size = UDim2.new(0.9, 0, 0, 40)
     btnESP.Position = UDim2.new(0.05, 0, 0, 190)
@@ -404,11 +365,9 @@ local function createScreenButtons()
     btnESP.TextSize = 13
     btnESP.BorderSizePixel = 0
     btnESP.Parent = frame
-
     local c4 = Instance.new("UICorner")
     c4.CornerRadius = UDim.new(0, 8)
     c4.Parent = btnESP
-
     btnESP.MouseButton1Click:Connect(function()
         RoleESP.Enabled = not RoleESP.Enabled
         ToggleESP(RoleESP.Enabled)
@@ -420,8 +379,6 @@ local function createScreenButtons()
             btnESP.Text = "👁️ ESP"
         end
     end)
-
-    -- Botão X (fechar)
     local btnX = Instance.new("TextButton")
     btnX.Size = UDim2.new(0, 25, 0, 25)
     btnX.Position = UDim2.new(1, -28, 0, 3)
@@ -432,11 +389,9 @@ local function createScreenButtons()
     btnX.TextSize = 14
     btnX.BorderSizePixel = 0
     btnX.Parent = frame
-
     local cX = Instance.new("UICorner")
     cX.CornerRadius = UDim.new(0, 12)
     cX.Parent = btnX
-
     btnX.MouseButton1Click:Connect(function()
         frame.Visible = false
         _G.aimbotEnabled = false
@@ -444,8 +399,6 @@ local function createScreenButtons()
         _G.autoShootSheriff = false
         if RoleESP.Enabled then ToggleESP(false) end
     end)
-
-    -- Arrastar pelo título
     local dragging, dragInput, dragStart, startPos
     local function updateDrag(input)
         local delta = input.Position - dragStart
@@ -469,7 +422,6 @@ local function createScreenButtons()
     UserInputService.InputChanged:Connect(function(input)
         if input == dragInput and dragging then updateDrag(input) end
     end)
-
     screenButtons.frame = frame
     screenButtons.gui = gui
 end
@@ -484,9 +436,6 @@ local function destroyScreenButtons()
     end
 end
 
--- ============================================
--- JANELA PRINCIPAL
--- ============================================
 local Window = Rayfield:CreateWindow({
     Name = "nycolas blox",
     LoadingTitle = "Carregando nycolas blox...",
@@ -499,83 +448,106 @@ local Window = Rayfield:CreateWindow({
         Title = "🔑 nycolas blox",
         Subtitle = "Digite a Key",
         Note = "Key: NYCOLAS",
-        FileName = "NycolasKey7",
+        FileName = "NycolasKey",
         SaveKey = false,
         GrabKeyFromSite = false,
         Key = {"NYCOLAS"}
     }
 })
 
--- ============================================
--- TAB HOME
--- ============================================
 local HomeTab = Window:CreateTab("Home", 4483362458)
-HomeTab:CreateSection("⚔️ Auto Farm")
-
-HomeTab:CreateToggle({Name = "Auto Collect Coins", CurrentValue = false, Flag = "AutoCoins", Callback = function(v) _G.autoFarmCoins = v end})
-HomeTab:CreateToggle({Name = "Auto Farm XP", CurrentValue = false, Flag = "AutoXP", Callback = function(v) _G.autoFarmXP = v end})
-HomeTab:CreateToggle({Name = "Auto Farm Gun", CurrentValue = false, Flag = "AutoGun", Callback = function(v) _G.autoFarmGun = v end})
-
 HomeTab:CreateSection("👤 Player")
-
-HomeTab:CreateToggle({
-    Name = "God Mode", CurrentValue = false, Flag = "GodMode",
-    Callback = function(v)
-        _G.godMode = v
-        local char = LocalPlayer.Character
-        if char and char:FindFirstChildOfClass("Humanoid") then
-            char:FindFirstChildOfClass("Humanoid").MaxHealth = v and math.huge or 100
-            char:FindFirstChildOfClass("Humanoid").Health = v and math.huge or 100
-        end
+HomeTab:CreateToggle({Name = "God Mode", CurrentValue = false, Flag = "GodMode", Callback = function(v)
+    local char = LocalPlayer.Character
+    if char and char:FindFirstChildOfClass("Humanoid") then
+        char:FindFirstChildOfClass("Humanoid").MaxHealth = v and math.huge or 100
+        char:FindFirstChildOfClass("Humanoid").Health = v and math.huge or 100
     end
-})
-
+end})
 HomeTab:CreateToggle({Name = "No Clip", CurrentValue = false, Flag = "NoClip", Callback = function(v) _G.noclip = v end})
-HomeTab:CreateToggle({Name = "Infinite Stamina", CurrentValue = false, Flag = "InfStamina", Callback = function(v) _G.infiniteStamina = v end})
-
 HomeTab:CreateSection("👁️ ESP")
+HomeTab:CreateToggle({Name = "ESP Players", CurrentValue = false, Flag = "ESPPlayers", Callback = function(v) ToggleESP(v) end})
 
-HomeTab:CreateToggle({Name = "ESP Players (Todos)", CurrentValue = false, Flag = "ESPPlayers", Callback = function(v) ToggleESP(v) end})
-HomeTab:CreateToggle({Name = "ESP Coins", CurrentValue = false, Flag = "ESPCoins", Callback = function(v) _G.espCoins = v end})
-
-HomeTab:CreateSection("🚀 Teleporte Rápido")
-
-HomeTab:CreateDropdown({
-    Name = "Select Teleport",
-    Options = {"Spawn", "Loja", "Mapa Principal", "Esconderijo"},
-    CurrentOption = {"Spawn"},
-    MultipleOptions = false,
-    Flag = "TeleportDropdown",
-    Callback = function(Option) Rayfield:Notify({Title = "Teleporte", Content = "Destino: " .. Option[1], Duration = 3}) end
-})
-
--- ============================================
--- TAB PLAYER
--- ============================================
 local PlayerTab = Window:CreateTab("Player", 4483362458)
 PlayerTab:CreateSection("Movimento")
-
-PlayerTab:CreateSlider({
-    Name = "Velocidade", Range = {16, 250}, Increment = 1, Suffix = "Speed",
-    CurrentValue = 16, Flag = "Speed",
-    Callback = function(v)
-        local char = LocalPlayer.Character
-        if char and char:FindFirstChildOfClass("Humanoid") then char:FindFirstChildOfClass("Humanoid").WalkSpeed = v end
-    end
-})
-
-PlayerTab:CreateSlider({
-    Name = "Pulo", Range = {50, 500}, Increment = 5, Suffix = "Power",
-    CurrentValue = 50, Flag = "Jump",
-    Callback = function(v)
-        local char = LocalPlayer.Character
-        if char and char:FindFirstChildOfClass("Humanoid") then char:FindFirstChildOfClass("Humanoid").JumpPower = v end
-    end
-})
-
+PlayerTab:CreateSlider({Name = "Velocidade", Range = {16, 250}, Increment = 1, Suffix = "Speed", CurrentValue = 16, Flag = "Speed", Callback = function(v)
+    local c = LocalPlayer.Character
+    if c and c:FindFirstChildOfClass("Humanoid") then c:FindFirstChildOfClass("Humanoid").WalkSpeed = v end
+end})
+PlayerTab:CreateSlider({Name = "Pulo", Range = {50, 500}, Increment = 5, Suffix = "Power", CurrentValue = 50, Flag = "Jump", Callback = function(v)
+    local c = LocalPlayer.Character
+    if c and c:FindFirstChildOfClass("Humanoid") then c:FindFirstChildOfClass("Humanoid").JumpPower = v end
+end})
 PlayerTab:CreateToggle({Name = "Pulo Infinito", CurrentValue = false, Flag = "InfJump", Callback = function(v) _G.infinjump = v end})
 
 UserInputService.JumpRequest:Connect(function()
     if _G.infinjump then
-        local char = LocalPlayer.Character
-        if char and char:FindFirstChildOfClass("Humanoid") then char:F
+        local c = LocalPlayer.Character
+        if c and c:FindFirstChildOfClass("Humanoid") then c:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping") end
+    end
+end)
+
+local ESPTab = Window:CreateTab("ESP", 4483362458)
+ESPTab:CreateSection("ESP")
+ESPTab:CreateToggle({Name = "ESP Todos os Players", CurrentValue = false, Flag = "ESPTodos", Callback = function(v) ToggleESP(v) end})
+ESPTab:CreateParagraph({Title = "Cores", Content = "🔴 Assassino | 🔵 Xerife | 🟢 Inocente"})
+
+local CombatTab = Window:CreateTab("Combate", 4483362458)
+CombatTab:CreateSection("🎯 Aimbot")
+
+local function getAimbotPlayerList()
+    local list = {"Ninguém (Todos)"}
+    for _, p in ipairs(Players:GetPlayers()) do
+        if p ~= LocalPlayer then table.insert(list, p.Name) end
+    end
+    return list
+end
+
+local aimbotList = getAimbotPlayerList()
+
+local AimbotDropdown = CombatTab:CreateDropdown({
+    Name = "🎯 Alvo do Aimbot",
+    Options = aimbotList,
+    CurrentOption = {"Ninguém (Todos)"},
+    MultipleOptions = false,
+    Flag = "AimbotTarget",
+    Callback = function(Option) aimbotTarget = Option[1] end
+})
+
+CombatTab:CreateButton({Name = "🔄 Atualizar Lista", Callback = function()
+    aimbotList = getAimbotPlayerList()
+    AimbotDropdown:Refresh(aimbotList, true)
+end})
+
+CombatTab:CreateToggle({Name = "🎯 Ativar Aimbot", CurrentValue = false, Flag = "AimbotToggle", Callback = function(v) _G.aimbotEnabled = v end})
+CombatTab:CreateSection("🔫 Auto-Shoot")
+CombatTab:CreateToggle({Name = "🔴 Auto-Shoot Assassino", CurrentValue = false, Flag = "AutoShootM", Callback = function(v) _G.autoShootMurderer = v end})
+CombatTab:CreateToggle({Name = "🔵 Auto-Shoot Xerife", CurrentValue = false, Flag = "AutoShootS", Callback = function(v) _G.autoShootSheriff = v end})
+CombatTab:CreateSection("📱 Botões na Tela")
+CombatTab:CreateToggle({Name = "📱 Mostrar Botões", CurrentValue = false, Flag = "ShowButtons", Callback = function(v)
+    if v then createScreenButtons() else destroyScreenButtons() end
+end})
+
+local TpTab = Window:CreateTab("Teleporte", 4483362458)
+TpTab:CreateSection("Jogadores")
+
+local function getPlayerList()
+    local list = {}
+    for _, p in ipairs(Players:GetPlayers()) do
+        if p ~= LocalPlayer then table.insert(list, p.Name) end
+    end
+    return list
+end
+
+local tpList = getPlayerList()
+
+local Drop = TpTab:CreateDropdown({
+    Name = "Selecionar Jogador",
+    Options = tpList,
+    CurrentOption = {""},
+    MultipleOptions = false,
+    Flag = "PlayerDrop",
+    Callback = function(Opt) selectedPlayer = Opt[1] end
+})
+
+TpTab:CreateButton({Name = "🔄 Atualizar 
